@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'injection_container.dart';
+import 'features/search/presentation/bloc/search_articles_bloc.dart';
 import 'features/daily_news/presentation/pages/home.dart';
 import 'features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
 import 'features/daily_news/presentation/bloc/article/remote/remote_article_event.dart';
-
+import 'features/search/presentation/pages/test.dart';
 
 Future main() async {
   await initializeDependencies();
@@ -16,10 +17,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RemoteArticleBloc>(
-      create: (context) => instance()..add(const GetDailyNewsArticles()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<RemoteArticleBloc>(
+          create: (context) => instance()..add(const GetDailyNewsArticles()),
+        ),
+        BlocProvider<SearchArticlesBloc>(
+          create: (context) => instance(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Clean',
+        routes: {
+          'home': (context) => const HomePage(),
+          'test': (context) => const TestPage(),
+        },
         theme: ThemeData.dark(),
         home: const HomePage(),
       ),

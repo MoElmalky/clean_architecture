@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/article/remote/remote_article_state.dart';
 import '../bloc/article/remote/remote_article_bloc.dart';
+import '../widgets/daily_news_viewer.dart';
+import '../bloc/article/remote/remote_article_event.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,11 +15,20 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Newses'),
-        leading: Icon(Icons.view_headline_sharp),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, 'test');
+          } ,
+          child: const Icon(Icons.view_headline_sharp)),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          GestureDetector(
+            onTap: () {
+              context.read<RemoteArticleBloc>().add(const GetDailyNewsArticles());
+            },
+            child: const Icon(Icons.refresh_sharp)),
+          const SizedBox(height: 40,),
           BlocBuilder<RemoteArticleBloc, RemoteArticleState>(
             builder: (context, state) {
               if (state is RemoteArticlesLoading) {
@@ -32,22 +43,12 @@ class HomePage extends StatelessWidget {
                 return const Center(child: Icon(Icons.refresh_sharp));
               } else {
                 return SizedBox(
-                  height: 500,
-                  child: ListView.builder(
-                      itemCount: state.articles!.length,
-                      itemBuilder: (context, i) {
-                        return Container(
-                          margin: const EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              state.articles![i].urlToImage == null ? 
-                              const CupertinoActivityIndicator()
-                              :Image.network(state.articles![i].urlToImage!),
-                              Text(state.articles![i].title!),
-                            ],
-                          ),
-                        );
-                      }),
+                  height: 600,
+                  child: ListView( 
+                    children: [ 
+                      ...state.articles!.map((article) => DailyNewsViewer(article: article))
+                    ],
+                  ),
                 );
               }
             },
