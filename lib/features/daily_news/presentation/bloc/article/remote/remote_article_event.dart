@@ -3,5 +3,6 @@ abstract class RemoteArticleEvent {
 }
 
 class GetDailyNewsArticles extends RemoteArticleEvent{
-  const GetDailyNewsArticles();
+  final String country;
+  const GetDailyNewsArticles(this.country);
 }

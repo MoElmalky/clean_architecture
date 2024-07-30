@@ -3,7 +3,7 @@ import '../../../../core/utils/usecase.dart';
 import '../entities/article.dart';
 import '../repository/article_repository.dart';
 
-class GetDailyNewsArticlesUseCase implements UseCase<DataState<List<ArticleEntity>>,void>{
+class GetDailyNewsArticlesUseCase implements UseCase<DataState<List<ArticleEntity>>,String>{
 
   final ArticleRepository _articleRepository;
 
@@ -11,8 +11,8 @@ class GetDailyNewsArticlesUseCase implements UseCase<DataState<List<ArticleEntit
 
 
   @override
-  Future<DataState<List<ArticleEntity>>> call({void params}) {
-    return _articleRepository.getDailyNewsArticles();
+  Future<DataState<List<ArticleEntity>>> call({required String params}) {
+    return _articleRepository.getDailyNewsArticles(params);
   }
 
 }

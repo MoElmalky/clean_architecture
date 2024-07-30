@@ -6,6 +6,7 @@ import 'features/search/presentation/bloc/search_articles_bloc.dart';
 import 'features/daily_news/presentation/pages/home.dart';
 import 'features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
 import 'features/daily_news/presentation/bloc/article/remote/remote_article_event.dart';
+import 'core/utils/constants.dart';
 
 Future main() async {
   await initializeDependencies();
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<RemoteArticleBloc>(
-          create: (context) => instance()..add(const GetDailyNewsArticles()),
+          create: (context) => instance()..add(const GetDailyNewsArticles(defaultCountry)),
         ),
         BlocProvider<SearchArticlesBloc>(
           create: (context) => instance(),

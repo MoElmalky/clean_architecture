@@ -15,7 +15,7 @@ class RemoteArticleBloc extends Bloc<RemoteArticleEvent, RemoteArticleState> {
   void onGetDailyNewsArticles(
     GetDailyNewsArticles event, Emitter<RemoteArticleState> emit) async {
     emit(const RemoteArticlesLoading());
-    final dataState = await _articlesUseCase();
+    final dataState = await _articlesUseCase(params: event.country);
 
     if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
       emit(RemoteArticlesSuccess(dataState.data!));

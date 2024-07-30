@@ -1,3 +1,4 @@
+import 'package:clean_architecture/features/search/presentation/bloc/search_articles_bloc.dart';
 import 'package:clean_architecture/features/search/presentation/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +51,7 @@ class HomePage extends StatelessWidget {
               onRefresh: () async {
                 return context
                     .read<RemoteArticleBloc>()
-                    .add(const GetDailyNewsArticles());
+                    .add(GetDailyNewsArticles(context.watch<SearchArticlesBloc>().params['country']));
               },
               color: Colors.white,
               child: ListView(

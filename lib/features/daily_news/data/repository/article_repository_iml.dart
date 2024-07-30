@@ -13,10 +13,10 @@ class ArticleRepositoryIml implements ArticleRepository {
   ArticleRepositoryIml(this._newsApiService);
 
   @override
-  Future<DataState<List<ArticleModel>>> getDailyNewsArticles() async {
+  Future<DataState<List<ArticleModel>>> getDailyNewsArticles(String country) async {
     try {
       final response = await _newsApiService.getDailyNewsArticles(
-          apiKey: abiKey, category: defaultCategory, country: defaultCountry);
+          apiKey: abiKey, category: defaultCategory, country: country);
       return _getDataState(response);
     } on DioException catch (error) {
       return DataFailed(error);
