@@ -1,12 +1,13 @@
-import 'package:clean_architecture/features/search/presentation/widgets/custom_dropdown.dart';
-import 'package:clean_architecture/features/search/presentation/widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/common/error_displayer.dart';
 import '../../../daily_news/presentation/widgets/daily_news_viewer.dart';
 import '../bloc/search_articles_bloc.dart';
 import '../bloc/search_articles_event.dart';
 import '../bloc/search_articles_state.dart';
+import '../widgets/custom_dropdown.dart';
+import '../widgets/custom_search_bar.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -66,8 +67,11 @@ class SearchPage extends StatelessWidget {
                 )),
               );
             } else if (state is SearchArticlesFailed) {
-              return const Expanded(
-                  child: Center(child: Icon(Icons.refresh_sharp)));
+              return ErrorDisplayer(
+                  onRefresh: () async => context
+                      .read<SearchArticlesBloc>()
+                      .add(const GetSearchedArticles()),
+                  message: state.error!.response!.data['message'].toString());
             } else {
               return Expanded(
                 child: RefreshIndicator(

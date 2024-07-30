@@ -1,7 +1,8 @@
-import 'package:clean_architecture/features/search/presentation/bloc/search_articles_bloc.dart';
-import 'package:clean_architecture/features/search/presentation/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/common/error_displayer.dart';
+import '../../../search/presentation/bloc/search_articles_bloc.dart';
+import '../../../search/presentation/widgets/custom_drawer.dart';
 import '../bloc/article/remote/remote_article_state.dart';
 import '../bloc/article/remote/remote_article_bloc.dart';
 import '../widgets/daily_news_viewer.dart';
@@ -22,41 +23,48 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         title: const Text('Newses'),
         leading: Builder(
-          builder: (context) => IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: const Icon(Icons.view_headline_sharp))),
+            builder: (context) => IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: const Icon(Icons.view_headline_sharp))),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, 'search');
-          }, 
-          icon: const Icon(Icons.search_sharp))
+              onPressed: () {
+                Navigator.pushNamed(context, 'search');
+              },
+              icon: const Icon(Icons.search_sharp))
         ],
       ),
       body: BlocBuilder<RemoteArticleBloc, RemoteArticleState>(
         builder: (context, state) {
           if (state is RemoteArticlesLoading) {
-            return const Center(child: RefreshProgressIndicator(
+            return const Center(
+                child: RefreshProgressIndicator(
               color: Colors.white,
               strokeWidth: 4,
               indicatorPadding: EdgeInsets.all(5),
             ));
           } else if (state is RemoteArticleFailed) {
-            return const Center(child: Icon(Icons.refresh_sharp));
+            return ErrorDisplayer(
+                onRefresh: () async => context.read<RemoteArticleBloc>().add(
+                    GetDailyNewsArticles(
+                        context.read<SearchArticlesBloc>().params['country'])),
+                message: state.error!.response!.data['message'].toString());
           } else {
             return RefreshIndicator(
               displacement: 10,
               onRefresh: () async {
-                return context
-                    .read<RemoteArticleBloc>()
-                    .add(GetDailyNewsArticles(context.watch<SearchArticlesBloc>().params['country']));
+                return context.read<RemoteArticleBloc>().add(
+                    GetDailyNewsArticles(
+                        context.read<SearchArticlesBloc>().params['country']));
               },
               color: Colors.white,
               child: ListView(
                 children: [
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   ...state.articles!
                       .map((article) => DailyNewsViewer(article: article))
                 ],

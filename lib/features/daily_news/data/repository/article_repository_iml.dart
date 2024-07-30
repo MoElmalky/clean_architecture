@@ -45,7 +45,8 @@ class ArticleRepositoryIml implements ArticleRepository {
           requestOptions: response.response.requestOptions,
           response: response.response,
           error: response.response.statusMessage,
-          type: DioExceptionType.badResponse));
+          type: DioExceptionType.badResponse,
+          ));
     }
   }
 }
