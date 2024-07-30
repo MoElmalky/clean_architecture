@@ -18,9 +18,12 @@ class DailyNewsViewer extends StatelessWidget {
             children: [
               article.urlToImage == null
                   ? Container(
-                      color: Colors.amber,
+                      color: Colors.white12,
                       height: 250,
                       width: 150,
+                      child: const Center(
+                        child : Icon(Icons.error_outline_sharp,size: 40,)
+                      ),
                     )
                   : Container(
                       height: 250,

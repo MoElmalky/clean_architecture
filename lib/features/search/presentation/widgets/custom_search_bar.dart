@@ -7,18 +7,20 @@ import '../bloc/search_articles_event.dart';
 class CustomSearchBar extends StatelessWidget {
   final TextEditingController searchController;
   const CustomSearchBar({super.key, required this.searchController});
-  
 
   @override
   Widget build(BuildContext context) {
-    Debouncer debouncer = Debouncer(duration: const Duration(milliseconds: 500));
+    Debouncer debouncer =
+        Debouncer(duration: const Duration(milliseconds: 500));
     return TextFormField(
       onChanged: (value) {
         debouncer.run(() {
           context
               .read<SearchArticlesBloc>()
               .add(ChangeKeyWord(searchController.text.trim()));
-          context.read<SearchArticlesBloc>().add(const GetSearchedArticles());
+          context
+              .read<SearchArticlesBloc>()
+              .add(const GetSearchedArticles());
         });
       },
       onEditingComplete: () {
@@ -26,10 +28,14 @@ class CustomSearchBar extends StatelessWidget {
           context
               .read<SearchArticlesBloc>()
               .add(ChangeKeyWord(searchController.text.trim()));
-          context.read<SearchArticlesBloc>().add(const GetSearchedArticles());
+          context
+              .read<SearchArticlesBloc>()
+              .add(const GetSearchedArticles());
         } else {
           context.read<SearchArticlesBloc>().add(const ChangeKeyWord(''));
-          context.read<SearchArticlesBloc>().add(const GetSearchedArticles());
+          context
+              .read<SearchArticlesBloc>()
+              .add(const GetSearchedArticles());
         }
       },
       controller: searchController,

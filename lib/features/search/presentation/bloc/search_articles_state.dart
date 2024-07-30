@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import '../../../daily_news/domain/entities/article.dart';
 
 abstract class SearchArticlesState extends Equatable{
+
   final List<ArticleEntity>? articles;
   final DioException? error;
 

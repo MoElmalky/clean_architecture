@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'features/search/presentation/pages/search_page.dart';
 import 'injection_container.dart';
 import 'features/search/presentation/bloc/search_articles_bloc.dart';
 import 'features/daily_news/presentation/pages/home.dart';
 import 'features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
 import 'features/daily_news/presentation/bloc/article/remote/remote_article_event.dart';
-import 'features/search/presentation/pages/test.dart';
 
 Future main() async {
   await initializeDependencies();
@@ -27,10 +27,11 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Clean',
         routes: {
           'home': (context) => const HomePage(),
-          'test': (context) => const TestPage(),
+          'search' :(context) => const SearchPage(),
         },
         theme: ThemeData.dark(),
         home: const HomePage(),
